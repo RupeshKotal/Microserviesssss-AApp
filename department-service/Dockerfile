@@ -1,20 +1,3 @@
-# # Use OpenJDK base image
-# FROM openjdk:17-jdk-slim
-
-# # Set working directory
-# WORKDIR /app
-
-# # Copy the JAR file into the container
-# COPY target/department-service-0.0.1-SNAPSHOT.jar app.jar
-
-# # Expose the port
-# EXPOSE 8082
-
-# # Run the JAR file
-# ENTRYPOINT ["java", "-jar", "app.jar"]
-
-
-# Use a multi-stage build for smaller final image
 # Stage 1: Build the application
 FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
@@ -22,10 +5,13 @@ FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /usr/src/app
 
 # Copy Maven project files
-COPY pom.xml .
-COPY src/ ./src/
+COPY pom.xml .  
 
-# Cache dependencies and build the application
+# Cache dependencies separately (improves build performance)
+RUN mvn dependency:go-offline -B
+
+# Copy source code and build the project
+COPY src/ ./src/
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create a minimal runtime image
