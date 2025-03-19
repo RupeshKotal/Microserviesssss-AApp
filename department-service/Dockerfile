@@ -28,7 +28,7 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 
 # Expose application port
-EXPOSE 8082
+EXPOSE 8080
 
 # Set environment variables
 ENV JAVA_OPTS="-Xms512m -Xmx1024m"
