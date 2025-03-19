@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # PostgreSQL for Employee Service
+  postgres-employee:
+    image: postgres:15
+    container_name: postgres-employee
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: employeedb
+    volumes:
+      - postgres-employee-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # PostgreSQL for Department Service
+  postgres-department:
+    image: postgres:15
+    container_name: postgres-department
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: departmentsdb
+    volumes:
+      - postgres-department-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # MySQL for Payroll Service
+  mysql-payroll:
+    image: mysql:8
+    container_name: mysql-payroll
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: payrolldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root123
+    volumes:
+      - mysql-payroll-data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  postgres-employee-data:
+  postgres-department-data:
+  mysql-payroll-data:
+
+networks:
+  app-network:
+    driver: bridge

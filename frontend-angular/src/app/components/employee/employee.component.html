@@ -1,0 +1,5 @@
+<h2>Employees</h2>
+<div *ngFor="let emp of employees">
+  <p>{{ emp.firstName }} {{ emp.lastName }} - {{ emp.email }}</p>
+  <button (click)="deleteEmployee(emp.id)">Delete</button>
+</div>
